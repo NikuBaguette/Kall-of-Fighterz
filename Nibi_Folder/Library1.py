@@ -6,7 +6,7 @@ class test:
         self.position_y = y
         self.velocity_y = 0
         self.jumping = False
-        self.HurtBox = pygame.Rect((x,y,width,height))
+        self.HurtBox = pygame.Rect(x,y,width,height)
     
     def Draw(self,surface,color=(255,0,0)):
         pygame.draw.rect(surface,color,self.HurtBox)
@@ -17,19 +17,22 @@ class test:
         dx = 0
         dy = 0
         key = pygame.key.get_pressed()
+        #Mouvement
         if key[pygame.K_q]:
             dx=-sp
         
         if key[pygame.K_d]:
             dx=sp
-        
+        #Saut
         if self.jumping == False and key[pygame.K_z]:
             self.jumping = True
             self.velocity_y = -50
         
+        #Gravité et Vélosité
         self.velocity_y += grv
         dy += self.velocity_y 
         
+        #Reste dans le cadre de l'écrant
         if self.HurtBox.left + dx < 0:
             dx = -self.HurtBox.left
         
