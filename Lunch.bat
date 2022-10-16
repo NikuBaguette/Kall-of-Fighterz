@@ -1,1 +1,2 @@
 py SuperGame.py
+exit
