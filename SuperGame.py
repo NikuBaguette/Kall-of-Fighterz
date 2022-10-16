@@ -21,10 +21,10 @@ height = screen.get_height()
 pg.display.set_caption("Call Of Fighters")
 time = pg.time.Clock()
 
-bg_image = pg.image.load("Batch\game\Call Of Fighters\dassets\dbackgroud\Heyo.jpg").convert_alpha()
+bg_image = pg.image.load("dassets\dbackgroud\Heyo.jpg").convert_alpha()
 
-Hero_Knight_sheet = pg.image.load("Batch\game\Call Of Fighters\dassets\Hero Knight 2\Sprites\Hero_Knight_2.png").convert_alpha()
-Fantasy_Warrior_sheet = pg.image.load("Batch\game\Call Of Fighters\dassets\Fantasy Warrior\Sprites\Fantasy_Warrior.png").convert_alpha()
+Hero_Knight_sheet = pg.image.load("dassets\Hero Knight 2\Sprites\Hero_Knight_2.png").convert_alpha()
+Fantasy_Warrior_sheet = pg.image.load("dassets\Fantasy Warrior\Sprites\Fantasy_Warrior.png").convert_alpha()
 
 Hero_Knight_Animation_Steps = [6,4,9,4,11,4,8,4]
 Fantasy_Warrior_Steps = [7,7,8,7,3,10,3,8,3]
