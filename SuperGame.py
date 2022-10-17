@@ -8,12 +8,14 @@ yeepee = (220,175,0)
 
 Hero_Knight_Size = 140
 Hero_Knight_Scale = 4
-Hero_Knight_Offset = [58,177]
-Hero_Knight_Data = [Hero_Knight_Size, Hero_Knight_Scale, Hero_Knight_Offset]
+Hero_Knight_Offset = [58,176]
+Hero_Knight_Base_Hurtbox = [90,160] # width, height
+Hero_Knight_Data = [Hero_Knight_Size, Hero_Knight_Scale, Hero_Knight_Offset, Hero_Knight_Base_Hurtbox]
 Fantasy_Warrior_Size = 162
 Fantasy_Warrior_Scale = 4
-Fantasy_Warrior_Offset = [72,156]
-Fantasy_Warrior_Data = [Fantasy_Warrior_Size, Fantasy_Warrior_Scale, Fantasy_Warrior_Offset]
+Fantasy_Warrior_Offset = [70,238] 
+Fantasy_Warrior_Base_Hurtbox = [90,170]# width, height
+Fantasy_Warrior_Data = [Fantasy_Warrior_Size, Fantasy_Warrior_Scale, Fantasy_Warrior_Offset, Fantasy_Warrior_Base_Hurtbox]
 
 screen = pg.display.set_mode(size)
 width = screen.get_width()
@@ -26,8 +28,8 @@ bg_image = pg.image.load("dassets\dbackgroud\Heyo.jpg").convert_alpha()
 Hero_Knight_sheet = pg.image.load("dassets\Hero Knight 2\Sprites\Hero_Knight_2.png").convert_alpha()
 Fantasy_Warrior_sheet = pg.image.load("dassets\Fantasy Warrior\Sprites\Fantasy_Warrior.png").convert_alpha()
 
-Hero_Knight_Animation_Steps = [6,4,9,4,11,4,8,4]
-Fantasy_Warrior_Steps = [7,7,8,7,3,10,3,8,3]
+Hero_Knight_Animation_Steps = [11,8,4,4,4,4,9,6]
+Fantasy_Warrior_Steps = [10,8,3,3,3,0,7,7,7,8]
 
 def background():
     scaled_bg = pg.transform.scale(bg_image,size)
@@ -47,14 +49,15 @@ player2=Players.New_Players(True, Fantasy_Warrior_Data, Fantasy_Warrior_sheet, F
 
 game_on = True
 
-
 while game_on:
     player1.Movement(height,width,screen,player2)
+    player2.Movement(height,width,screen,player1)
     background()
     healthbar(player1.health,25,20,1)
     healthbar(player2.health,width-575,20)
     
     player1.Update()
+    player2.Update()
     
     player1.Draw(screen)
     player2.Draw(screen)

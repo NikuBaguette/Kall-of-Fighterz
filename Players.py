@@ -1,20 +1,21 @@
 import pygame
 class New_Players:
     count = 0
-    def __init__(self,flip,data,sprite_sheet,animation_steps,width=100,height=160,x=0,y=0):
+    def __init__(self,flip,data,sprite_sheet,animation_steps,x=0,y=0):
         self.size = data[0]
         self.image_scale = data[1]
         self.offset = data[2]
         self.flip = flip
         self.animation_list = self.Load_images(sprite_sheet,animation_steps)
-        self.act = 4 #0:Attack1  1:dash  2:death  3:fall  4:iddle  5:jump  6:run  7:TakeHit (in test)
+        self.act = 0 #0:Iddle  1:Run  2:Jump  3:fall  4:TakeHit  5:Dash  6:Death  7:Attack* (in test)
         self.frame_index = 0
         self.image = self.animation_list[self.act][self.frame_index]
         self.update_time = pygame.time.get_ticks()
         self.vel = 0
         self.running = False
         self.jumping = False
-        self.HurtBox = pygame.Rect(x,y-height,width,height)
+        self.HurtBox = data[3]
+        self.HurtBox = pygame.Rect(x,y-self.HurtBox[1],self.HurtBox[0],self.HurtBox[1])
         self.attack_type = 0
         self.isAttacking = False
         self.health = 1000
@@ -83,11 +84,16 @@ class New_Players:
         
     def Update(self):
         if self.jumping:
-            self.Update_action(5)
+            if self.vel > 0:
+                self.Update_action(3)
+            else:
+                self.Update_action(2)
         elif self.running:
-            self.Update_action(6)
+            self.Update_action(1)
+        elif self.isAttacking:
+            self.Update_action(7)
         else:
-            self.Update_action(4)
+            self.Update_action(0)
         cooldown = 60
         self.image = self.animation_list[self.act][self.frame_index]
         if pygame.time.get_ticks() - self.update_time > cooldown:
@@ -102,7 +108,6 @@ class New_Players:
         
         if Hitbox.colliderect(target.HurtBox):
             target.health -= 150
-        pygame.draw.rect(surface,(0,250,0),Hitbox)
     
     def Update_action(self, new_action):
         if new_action != self.act:
@@ -112,5 +117,5 @@ class New_Players:
 
     def Draw(self,surface):
         img = pygame.transform.flip(self.image, self.flip, False)
-        pygame.draw.rect(surface,(255,0,0),self.HurtBox)
-        surface.blit(img, (self.HurtBox.x - (self.offset[0] * self.image_scale), self.HurtBox.y - (self.offset[1] - self.image_scale)))
+        """pygame.draw.rect(surface,(255,0,0),self.HurtBox)"""
+        surface.blit(img, (self.HurtBox.left - (self.offset[0] * self.image_scale), self.HurtBox.y - (self.offset[1] - self.image_scale)))
