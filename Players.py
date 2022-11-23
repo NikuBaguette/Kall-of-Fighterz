@@ -144,9 +144,4 @@ class Button:
         else:
             return False
     
-    def Button1Click(self):
-        key = pygame.key.get_pressed()
-        if self.mouseOver() and key[pygame.K_h] is True:
-            return True
-        else:
-            return False
+    def Button1Click(self): return True if self.mouseOver() and pygame.mouse.get_pressed()[0] is True else False
