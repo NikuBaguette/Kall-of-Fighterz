@@ -19,9 +19,6 @@ def start():
     playButton = Players.Button(width//2 - 100,height//2 - 150, 200, 100)
     quitButton = Players.Button(width//2 - 100,height//2 + 50, 200, 100)
 
-    def button(rect:pg.Rect, color = (200,0,0)):
-        pg.draw.rect(screen,color,rect)
-
     while game_on:
         background()
         for event in pg.event.get(): 
