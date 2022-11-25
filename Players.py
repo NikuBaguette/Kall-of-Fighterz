@@ -1,7 +1,9 @@
 import pygame
+
 class New_Players:
     count = 0
-    def __init__(self,flip:bool,data:list,sprite_sheet,animation_steps:list,x:int=0,y:int=0):
+    def __init__(self, player:int, flip:bool,data:list,sprite_sheet,animation_steps:list,x:int=0,y:int=0):
+        self.player = player
         self.size = data[0]
         self.image_scale = data[1]
         self.offset = data[2]
@@ -18,7 +20,10 @@ class New_Players:
         self.HurtBox = pygame.Rect(x,y-self.HurtBox[1],self.HurtBox[0],self.HurtBox[1])
         self.attack_type = 0
         self.isAttacking = False
+        self.cooldown = 0
+        self.hit = False
         self.health = 1000
+        self.death = False
     
     def Load_images(self,sprite_sheet,animation_steps):
         animation_list = []
@@ -40,28 +45,51 @@ class New_Players:
         key = pygame.key.get_pressed()
 
         if self.isAttacking == False:
-            
-            if key[pygame.K_q]:
-                dx=-sp
-                self.running = True
-            
-            if key[pygame.K_d]:
-                dx=sp
-                self.running = True
+            if self.player == 1:
+                
+                if key[pygame.K_q]:
+                    dx=-sp
+                    self.running = True
+                
+                if key[pygame.K_d]:
+                    dx=sp
+                    self.running = True
 
-            if self.jumping == False and key[pygame.K_z]:
-                self.jumping = True
-                self.vel = -50
+                if self.jumping == False and key[pygame.K_z]:
+                    self.jumping = True
+                    self.vel = -50
+                    
+                if key[pygame.K_u] or key[pygame.K_i]:
+                    if key[pygame.K_u]:
+                        self.attack_type = 2
+                    if key[pygame.K_i]:
+                        self.attack_type = 3
+                    if key[pygame.K_u] and self.jumping:
+                        self.attack_type = 1
+                    self.Attack(surface,target)
+            
+            if self.player == 2:
                 
-            if key[pygame.K_u] or key[pygame.K_i]:
-                if key[pygame.K_u]:
-                    self.attack_type = 2
-                if key[pygame.K_i]:
-                    self.attack_type = 3
-                if key[pygame.K_u] and self.jumping:
-                    self.attack_type = 1
-                self.Attack(surface,target)
+                if key[pygame.K_LEFT]:
+                    dx=-sp
+                    self.running = True
                 
+                if key[pygame.K_RIGHT]:
+                    dx=sp
+                    self.running = True
+
+                if self.jumping == False and key[pygame.K_UP]:
+                    self.jumping = True
+                    self.vel = -50
+                    
+                if key[pygame.K_KP_4] or key[pygame.K_KP_5]:
+                    if key[pygame.K_KP_4]:
+                        self.attack_type = 2
+                    if key[pygame.K_KP_5]:
+                        self.attack_type = 3
+                    if key[pygame.K_KP_4] and self.jumping:
+                        self.attack_type = 1
+                    self.Attack(surface,target)
         
         self.vel += grv
         dy += self.vel
@@ -82,11 +110,20 @@ class New_Players:
         else:
             self.flip = True
         
+        if self.cooldown > 0:
+            self.cooldown -= 1
+        
         self.HurtBox.x += dx
         self.HurtBox.y += dy
         
     def Update(self):
-        if self.jumping:
+        if self.health <= 0:
+            self.health = 0
+            self.death = True
+            self.Update_action(6)
+        elif self.hit == True :
+            self.Update_action(4)
+        elif self.jumping:
             if self.vel > 0:
                 self.Update_action(3)
             else:
@@ -106,13 +143,29 @@ class New_Players:
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
         if self.frame_index >= len(self.animation_list[self.act]):
-            self.frame_index = 0
+            if self.death:
+                self.frame_index = len(self.animation_list[self.act]) - 1
+            else:
+                self.frame_index = 0
+                if self.act == 7 or self.act == 8 or self.act == 9 or self.act == 10 or self.act == 11 or self.act == 12:
+                    self.isAttacking = False
+                    self.cooldown = 30
+                if self.act == 4:
+                    self.hit = False
+                    self.isAttacking = False
+                    self.cooldown = 30
         
     def Attack(self,surface:tuple,target):
-        self.isAttacking = True
-        Hitbox = pygame.Rect(self.HurtBox.centerx - (2 * self.HurtBox.width * self.flip), self.HurtBox.y, 2 * self.HurtBox.width, self.HurtBox.height)
-        if Hitbox.colliderect(target.HurtBox):
-            target.health -= 150
+        if self.cooldown == 0 :
+            self.isAttacking = True
+            Hitbox = pygame.Rect(self.HurtBox.centerx - (2 * self.HurtBox.width * self.flip), self.HurtBox.y, 2 * self.HurtBox.width, self.HurtBox.height)
+            if Hitbox.colliderect(target.HurtBox):
+                target.TakingDamaged()
+    
+    def TakingDamaged(self):
+        self.health -= 500
+        self.hit = True
+            
     
     def Update_action(self, new_action:int):
         if new_action != self.act:
@@ -122,7 +175,7 @@ class New_Players:
 
     def Draw(self,surface:tuple):
         img = pygame.transform.flip(self.image, self.flip, False)
-        pygame.draw.rect(surface,(255,0,0),self.HurtBox)
+        """pygame.draw.rect(surface,(255,0,0),self.HurtBox)"""
         surface.blit(img, (self.HurtBox.left - (self.offset[0] * self.image_scale), self.HurtBox.y - (self.offset[1] - self.image_scale)))
 
 class Button:

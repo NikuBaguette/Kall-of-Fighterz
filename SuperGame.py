@@ -18,6 +18,7 @@ Fantasy_Warrior_Steps = [10,8,3,3,3,0,7,7,7,8]
 
 pg.init()
 
+
 size = (1280,720)
 sky = (135,206,235)
 yeepee = (220,175,0)
@@ -48,8 +49,8 @@ def healthbar(health,x,y,plr=0):
     else:
         pg.draw.rect(screen,yeepee,(x,y,550*imagine_lost_hp,20))
 
-player1=Players.New_Players(False, Hero_Knight_Data, Hero_Knight_sheet, Hero_Knight_Animation_Steps, x=150, y=640)
-player2=Players.New_Players(True, Fantasy_Warrior_Data, Fantasy_Warrior_sheet, Fantasy_Warrior_Steps, x=980, y=640)
+player1=Players.New_Players(1, False, Hero_Knight_Data, Hero_Knight_sheet, Hero_Knight_Animation_Steps, x=150, y=640)
+player2=Players.New_Players(2, True, Fantasy_Warrior_Data, Fantasy_Warrior_sheet, Fantasy_Warrior_Steps, x=980, y=640)
 
 
 
