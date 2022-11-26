@@ -17,13 +17,11 @@ Hero_Knight_Animation_Steps = [11,8,4,4,4,4,9,6]
 Fantasy_Warrior_Steps = [10,8,3,3,3,0,7,7,7,8]
 
 pg.init()
-
+pg.mixer.init()
 
 size = (1280,720)
 sky = (135,206,235)
 yeepee = (220,175,0)
-
-
 
 screen = pg.display.set_mode(size)
 width = screen.get_width()
@@ -55,7 +53,10 @@ player2=Players.New_Players(2, True, Fantasy_Warrior_Data, Fantasy_Warrior_sheet
 
 
 game_on = True if Main_menu.start() else False
-
+if game_on == True:
+    pg.mixer.music.load("dassets\sounds\musics\Revolution Mario.mp3")
+    pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play()
 while game_on:
     player2.Movement(height,width,screen,player1)
     player1.Movement(height,width,screen,player2)

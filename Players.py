@@ -32,7 +32,9 @@ class New_Players:
             for x in range(animation):
                 temp_img = sprite_sheet.subsurface(x * self.size, y * self.size, self.size, self.size)
                 temp_img_list.append(pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
+                
             animation_list.append(temp_img_list)
+            
         return animation_list
         
 
@@ -44,112 +46,123 @@ class New_Players:
         self.running = False
         key = pygame.key.get_pressed()
 
-        if self.isAttacking == False:
-            if self.player == 1:
-                
-                if key[pygame.K_q]:
-                    dx=-sp
-                    self.running = True
-                
-                if key[pygame.K_d]:
-                    dx=sp
-                    self.running = True
-
-                if self.jumping == False and key[pygame.K_z]:
-                    self.jumping = True
-                    self.vel = -50
+        if self.death == False :
+            if self.isAttacking == False:
+                if self.player == 1:
                     
-                if key[pygame.K_u] or key[pygame.K_i]:
-                    if key[pygame.K_u]:
-                        self.attack_type = 2
-                    if key[pygame.K_i]:
-                        self.attack_type = 3
-                    if key[pygame.K_u] and self.jumping:
-                        self.attack_type = 1
-                    self.Attack(surface,target)
+                    if key[pygame.K_q]:
+                        dx=-sp
+                        self.running = True
+                    
+                    if key[pygame.K_d]:
+                        dx=sp
+                        self.running = True
+
+                    if self.jumping == False and key[pygame.K_z]:
+                        self.jumping = True
+                        self.vel = -50
+                        
+                    if key[pygame.K_u] or key[pygame.K_i]:
+                        if key[pygame.K_u]:
+                            self.attack_type = 2
+                        if key[pygame.K_i]:
+                            self.attack_type = 3
+                        if key[pygame.K_u] and self.jumping:
+                            self.attack_type = 1
+                        self.Attack(surface,target)
+                
+                if self.player == 2:
+                    if key[pygame.K_LEFT]:
+                        dx=-sp
+                        self.running = True
+                    
+                    if key[pygame.K_RIGHT]:
+                        dx=sp
+                        self.running = True
+
+                    if self.jumping == False and key[pygame.K_UP]:
+                        self.jumping = True
+                        self.vel = -50
+                        
+                    if key[pygame.K_KP_4] or key[pygame.K_KP_5]:
+                        if key[pygame.K_KP_4]:
+                            self.attack_type = 2
+                            
+                        if key[pygame.K_KP_5]:
+                            self.attack_type = 3
+
+                        self.Attack(surface,target)
             
-            if self.player == 2:
-                
-                if key[pygame.K_LEFT]:
-                    dx=-sp
-                    self.running = True
-                
-                if key[pygame.K_RIGHT]:
-                    dx=sp
-                    self.running = True
-
-                if self.jumping == False and key[pygame.K_UP]:
-                    self.jumping = True
-                    self.vel = -50
-                    
-                if key[pygame.K_KP_4] or key[pygame.K_KP_5]:
-                    if key[pygame.K_KP_4]:
-                        self.attack_type = 2
-                    if key[pygame.K_KP_5]:
-                        self.attack_type = 3
-                    if key[pygame.K_KP_4] and self.jumping:
-                        self.attack_type = 1
-                    self.Attack(surface,target)
-        
-        self.vel += grv
-        dy += self.vel
-        
-        if self.HurtBox.left + dx < 0:
-            dx = -self.HurtBox.left
-        
-        if self.HurtBox.right + dx > width:
-            dx = width - self.HurtBox.right
-        
-        if self.HurtBox.bottom + dy > height - 80:
-            self.vel = 0
-            dy = height - 80 - self.HurtBox.bottom
-            self.jumping = False
-        
-        if self.HurtBox.centerx < target.HurtBox.centerx:
-            self.flip = False
-        else:
-            self.flip = True
-        
-        if self.cooldown > 0:
-            self.cooldown -= 1
-        
-        self.HurtBox.x += dx
-        self.HurtBox.y += dy
+            self.vel += grv
+            dy += self.vel
+            
+            if self.HurtBox.left + dx < 0:
+                dx = -self.HurtBox.left
+            
+            if self.HurtBox.right + dx > width:
+                dx = width - self.HurtBox.right
+            
+            if self.HurtBox.bottom + dy > height - 80:
+                self.vel = 0
+                dy = height - 80 - self.HurtBox.bottom
+                self.jumping = False
+            
+            if self.HurtBox.centerx < target.HurtBox.centerx:
+                self.flip = False
+            else:
+                self.flip = True
+            
+            if self.cooldown > 0:
+                self.cooldown -= 1
+            
+            self.HurtBox.x += dx
+            self.HurtBox.y += dy
         
     def Update(self):
         if self.health <= 0:
             self.health = 0
             self.death = True
             self.Update_action(6)
+
         elif self.hit == True :
             self.Update_action(4)
+
         elif self.jumping:
             if self.vel > 0:
                 self.Update_action(3)
+                
             else:
                 self.Update_action(2)
+
         elif self.running:
             self.Update_action(1)
+
         elif self.isAttacking:
             if self.attack_type+6 >= len(self.animation_list):
                 self.Update_action(7)
+
             else:
                 self.Update_action(6+self.attack_type)
+
         else:
             self.Update_action(0)
+
         cooldown = 60
         self.image = self.animation_list[self.act][self.frame_index]
         if pygame.time.get_ticks() - self.update_time > cooldown:
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
+
         if self.frame_index >= len(self.animation_list[self.act]):
             if self.death:
                 self.frame_index = len(self.animation_list[self.act]) - 1
+
             else:
                 self.frame_index = 0
                 if self.act == 7 or self.act == 8 or self.act == 9 or self.act == 10 or self.act == 11 or self.act == 12:
                     self.isAttacking = False
                     self.cooldown = 30
+
                 if self.act == 4:
                     self.hit = False
                     self.isAttacking = False
@@ -186,6 +199,7 @@ class Button:
     def draw(self, screen:tuple, color:tuple = (255,0,0), overcolor = (135,206,235)):
         if self.mouseOver():
             pygame.draw.rect(screen, overcolor, self.Rect)
+            
         else:
             pygame.draw.rect(screen, color, self.Rect)
         
@@ -194,6 +208,7 @@ class Button:
         mouse = pygame.mouse.get_pos()
         if mouse[0] >= self.Rect.left and mouse[0] <= self.Rect.right and mouse[1] >= self.Rect.top and mouse[1] <= self.Rect.bottom:
             return True
+        
         else:
             return False
     
