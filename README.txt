@@ -12,6 +12,7 @@ Player 2 :
 
 To start :
     You need Pygame, type 'python3 -m pip install -U pygame --user' in your cmd
+    Double click the Lunch.bat file !
 
 
 <<<<< Usefull section >>>>>
