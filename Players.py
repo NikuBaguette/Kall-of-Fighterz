@@ -176,7 +176,7 @@ class New_Players:
                 target.TakingDamaged()
     
     def TakingDamaged(self):
-        self.health -= 500
+        self.health -= 150
         self.hit = True
             
     
