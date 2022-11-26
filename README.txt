@@ -12,3 +12,7 @@ Player 2 :
 
 To start :
     You need Pygame, type 'python3 -m pip install -U pygame --user' in your cmd
+
+winget install --id Git.Git -e --source winget
+python3 -m pip install --upgrade
+git clone https://github.com/renpy/pygame_sdl2_windeps
