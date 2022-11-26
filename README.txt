@@ -9,3 +9,6 @@ Player 2 :
     right arrow to move right
     up arrow to jump
     nump 4 and nump5 to attack
+
+To start :
+    You need Pygame, type 'python3 -m pip install -U pygame --user' in your cmd
