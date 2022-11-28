@@ -26,7 +26,7 @@ yeepee = (220,175,0)
 screen = pg.display.set_mode(size)
 width = screen.get_width()
 height = screen.get_height()
-pg.display.set_caption("Call Of Fighters")
+pg.display.set_caption("Kall Of Fighterz")
 time = pg.time.Clock()
 
 bg_image = pg.image.load("dassets\dbackgroud\Heyo.jpg").convert_alpha()
