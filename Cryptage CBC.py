@@ -1,4 +1,4 @@
-### Définition des fonction de cryptage et décryptage ###
+### Définition des fonctions de cryptage et décryptage ###
 
 def Encodage_CBC(texte:str = "ENSA", key:str = "01010101", init:str = "11010110")->str:
     if texte == "": 
