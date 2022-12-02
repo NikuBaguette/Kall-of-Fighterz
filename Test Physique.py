@@ -8,7 +8,7 @@ class Projectile:
         self.frot = frottement
 
     def mov(self,width,height,liste:list):
-        gravity = 2
+        gravity = 4
         frot = self.frot
         dx = 0
         dy = 0
@@ -19,17 +19,15 @@ class Projectile:
 
         for i in liste:
             if self != i:
-                if self.box.left - dx <= i.box.right and self.box.right + dx > i.box.left and self.box.top - dy <= i.box.bottom and self.box.bottom + dx > i.box.top:
-                    if self.box.y >=  i.box.y:
-                        self.vy = abs(self.vy)/frot
-                        dy = abs(dy)
-                    else:
-                        self.vy = -self.vy/frot
-                        dy = -abs(dy)
-                    self.vx = -self.vx/frot
-                    
-                    dx = -dx
-
+                if self.box.left + dx < i.box.right and self.box.right + dx > i.box.left:
+                    if self.box.top + dy < i.box.bottom and self.box.bottom + dy > i.box.top:
+                        if abs(self.vx) <= 0.3:
+                            self.vx = 0
+                        self.vy = -self.vy//frot+gravity
+                        self.vx = -self.vx/frot
+                        dy = 0
+                        dx = 0
+                
         if self.box.left + dx < 0:
             self.vx = abs(self.vx)/frot
             dx = 0
@@ -42,7 +40,7 @@ class Projectile:
             if abs(self.vx) <= 0.3:
                 self.vx = 0
             self.vx = self.vx/frot
-            self.vy = -self.vy//gravity
+            self.vy = -(self.vy//frot)+gravity
             dy = height - 50 - self.box.bottom
 
         self.box.x += dx
@@ -60,9 +58,9 @@ keys = pygame.key.get_pressed()
 sky = (135,206,235)
 game = True
 
-a = [Projectile(randint(0,770), randint(0,400), 30, 30, 1 + (randint(1,50)/100), randint(-50,50), randint(-20, 0)) for _ in range(0)]
-a.append(Projectile(300,400,30,30, vx=0))
-a.append(Projectile(300,200,30,30, vx=0))
+a = [Projectile(randint(0,770), randint(0,400), 30, 30, 1 + (randint(1,50)/100), randint(-50,50), randint(-20, 0)) for _ in range(5)]
+"""a.append(Projectile(300,400,30,30, vx=0))
+a.append(Projectile(300,200,30,30, vx=0))"""
 def movProjo(liste:list):
     for i in liste:
         i.mov(800,600,liste)
@@ -81,6 +79,6 @@ while game:
     drawProjo(a)
     
     pygame.display.update()
-    time.tick(60)
+    time.tick(60) 
 
 pygame.quit()
