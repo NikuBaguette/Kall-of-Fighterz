@@ -53,7 +53,7 @@ vec = input("Quel vecteur d'initialisation ? (en format binaire 8 bits) ")
 print(f"Message crypté : {Encodage_CBC(message,cle,vec)} \nClé : {cle} \nVecteur : {vec}")
 
 ### Decryptage ###
-message = input("uel messages voulez vous decrypter ? ")
+message = input("Quel messages voulez vous decrypter ? ")
 cle = input("Quel clé voulez-vous utiliser ? (en format binaire 8 bits) ")
 vec = input("Quel vecteur d'initialisation ? (en format binaire 8 bits) ")
 print(f"Message decrypté : {Decodage_CBC(message,cle,vec)} \nClé : {cle} \nVecteur : {vec}")
